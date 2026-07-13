@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti Kuddus Protocol - Seat Planner</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-muted: #444444;
+            --accent-red: #cc0000;
+            --accent-green-bright: #268552;
+            --accent-orange: #d97706;
+            --border-color: #1a1a1a;
+            
+            /* Seat Grid Gradient Colors (Brightest to Darkest) */
+            --seat-row-a: #52e089;
+            --seat-row-b: #36c271;
+            --seat-row-a-text: #052e16;
+            --seat-row-c: #1e9452;
+            --seat-row-d: #146c3a;
+            --seat-row-e: #0d4725;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* Header Styles */
+        header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            color: var(--accent-red);
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: transparent;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 35px;
+            gap: 24px;
+        }
+
+        .nav-tab {
+            padding: 12px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-green-bright);
+            border-bottom: 2px solid var(--accent-green-bright);
+        }
+
+        .nav-tab .badge {
+            background-color: var(--accent-orange);
+            color: var(--bg-color);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        /* Section Headings */
+        .section-meta {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* Board / Teacher Zone Banner */
+        .teacher-zone {
+            border: 1px solid rgba(38, 133, 82, 0.2);
+            color: var(--accent-green-bright);
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            padding: 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        /* Seat Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            row-gap: 12px;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .row-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-align: right;
+            padding-right: 20px;
+            line-height: 1.4;
+        }
+
+        .seats-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .seat {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .seat:hover {
+            transform: scale(1.05);
+        }
+
+        /* Row-specific custom colors matching the visual layout gradient */
+        .row-a .seat { background-color: var(--seat-row-a); color: var(--seat-row-a-text); }
+        .row-b .seat { background-color: var(--seat-row-b); }
+        .row-c .seat { background-color: var(--seat-row-c); }
+        .row-d .seat { background-color: var(--seat-row-d); }
+        .row-e .seat { background-color: var(--seat-row-e); }
+
+        /* Color Scale Legend Bar */
+        .legend-wrapper {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 45px;
+        }
+
+        .gradient-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, var(--seat-row-a), var(--seat-row-e));
+            margin-bottom: 8px;
+        }
+
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .legend-labels .left-label {
+            color: var(--accent-green-bright);
+            font-weight: bold;
+        }
+
+        /* Footer Controls */
+        .footer-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .pagination-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: var(--accent-green-bright);
+        }
+
+        .footer-banner {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <button class="logout-btn">← Log Out</button>
+            <h1 class="main-title">Anti Kuddus Protocol</h1>
+            <button class="status-badge">• Total Strikes on Record: 2/3 ▼</button>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav>
+            <div class="nav-tab">01 Report Abuse</div>
+            <div class="nav-tab active">02 Seat Planner</div>
+            <div class="nav-tab">03 Tools</div>
+        </nav>
+
+        <!-- Main Document Metadata and Headers -->
+        <div class="section-meta">Section 02</div>
+        <h2>Seat Planner</h2>
+        <p class="section-desc">Shortest students in front, tallest in the back. Color gets darker as height increases.</p>
+
+        <!-- Grid Arena Header Placement -->
+        <div class="teacher-zone">▲ Board / Teacher Zone ▲</div>
+
+        <!-- Interactive Seating Layout Configuration -->
+        <div class="grid-container">
+            <!-- Row A -->
+            <div class="row-label">Front Row — Shortest Students</div>
+            <div class="seats-row row-a">
+                <div class="seat">A1</div>
+                <div class="seat">A2</div>
+                <div class="seat">A3</div>
+                <div class="seat">A4</div>
+                <div class="seat">A5</div>
+            </div>
+
+            <!-- Row B -->
+            <div class="row-label">Row 2</div>
+            <div class="seats-row row-b">
+                <div class="seat">B1</div>
+                <div class="seat">B2</div>
+                <div class="seat">B3</div>
+                <div class="seat">B4</div>
+                <div class="seat">B5</div>
+            </div>
+
+            <!-- Row C -->
+            <div class="row-label">Row 3</div>
+            <div class="seats-row row-c">
+                <div class="seat">C1</div>
+                <div class="seat">C2</div>
+                <div class="seat">C3</div>
+                <div class="seat">C4</div>
+                <div class="seat">C5</div>
+            </div>
+
+            <!-- Row D -->
+            <div class="row-label">Row 4</div>
+            <div class="seats-row row-d">
+                <div class="seat">D1</div>
+                <div class="seat">D2</div>
+                <div class="seat">D3</div>
+                <div class="seat">D4</div>
+                <div class="seat">D5</div>
+            </div>
+
+            <!-- Row E -->
+            <div class="row-label">Back Row — Tallest Students</div>
+            <div class="seats-row row-e">
+                <div class="seat">E1</div>
+                <div class="seat">E2</div>
+                <div class="seat">E3</div>
+                <div class="seat">E4</div>
+                <div class="seat">E5</div>
+            </div>
+        </div>
+
+        <!-- Metric Height Indicator Graph Key -->
+        <div class="legend-wrapper">
+            <div class="gradient-bar"></div>
+            <div class="legend-labels">
+                <span class="left-label">Shortest</span>
+                <span>Height Gradient</span>
+                <span>Tallest</span>
+            </div>
+        </div>
+
+        <!-- Step-by-Step Navigation Control -->
+        <div class="footer-navigation">
+            <a href="#" class="nav-link">&lt; Report Abuse</a>
+            <div class="pagination-dots">
+                <span class="dot"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+            </div>
+            <a href="#" class="nav-link">Tools &gt;</a>
+        </div>
+
+        <!-- Security Classification Identity Footer Banner -->
+        <div class="footer-banner">Anti Kuddus Protocol — All Evidence Encrypted — Stay Safe</div>
+    </div>
+
+</body>
+</html>
