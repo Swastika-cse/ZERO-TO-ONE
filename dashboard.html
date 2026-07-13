@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti Kuddus Protocol - Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-muted: #444444;
+            --accent-red: #cc0000;
+            --accent-green: #1b5e3a;
+            --accent-green-bright: #268552;
+            --accent-orange: #d97706;
+            --border-color: #1a1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* Header Styles */
+        header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            color: var(--accent-red);
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: transparent;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 35px;
+            gap: 24px;
+        }
+
+        .nav-tab {
+            padding: 12px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-green-bright);
+            border-bottom: 2px solid var(--accent-green-bright);
+        }
+
+        .nav-tab .badge {
+            background-color: var(--accent-orange);
+            color: var(--bg-color);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        /* Content Sections */
+        .section-meta {
+            color: var(--accent-green-bright);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Form Components */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+            line-height: 1.6;
+        }
+
+        .form-hint {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        /* Upload Box */
+        .upload-zone {
+            border: 1px dashed var(--border-color);
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .upload-icon {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .upload-text span {
+            color: var(--accent-green-bright);
+            text-decoration: underline;
+        }
+
+        .upload-subtext {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .metadata-tag {
+            color: var(--accent-green-bright);
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 30px;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            padding: 16px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-green);
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .btn-submit span {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .btn-emergency {
+            background-color: var(--accent-red);
+            color: var(--text-primary);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .emergency-desc {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        /* Ledger Table Section */
+        .ledger-title {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 40px;
+        }
+
+        .ledger-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ledger-table td {
+            padding: 14px 8px;
+            color: var(--text-secondary);
+        }
+
+        .ledger-table td:first-child {
+            color: var(--text-muted);
+            padding-left: 0;
+        }
+
+        .ledger-table td.case-title {
+            color: var(--text-primary);
+        }
+
+        .status-open { color: var(--accent-red); text-transform: uppercase; text-align: right; }
+        .status-resolved { color: var(--accent-green-bright); text-transform: uppercase; text-align: right; }
+        .status-review { color: var(--accent-orange); text-transform: uppercase; text-align: right; }
+
+        /* Footer Controls */
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: var(--accent-green-bright);
+        }
+
+        .next-link {
+            display: block;
+            text-align: right;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+        }
+
+        .footer-banner {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <button class="logout-btn">← Log Out</button>
+            <h1 class="main-title">Anti Kuddus Protocol</h1>
+            <button class="status-badge">• Total Strikes on Record: 2/3 ▼</button>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav>
+            <div class="nav-tab active">01 Report Abuse <span class="badge">2/3</span></div>
+            <div class="nav-tab">02 Seat Planner</div>
+            <div class="nav-tab">03 Tools</div>
+        </nav>
+
+        <!-- Form Heading -->
+        <div class="section-meta">Section 01</div>
+        <h2>Report Abuse</h2>
+        <p class="section-desc">No names. No traces. Just the facts — describe what happened, upload proof if you have it, and hit send. This goes nowhere except the right people.</p>
+
+        <!-- Interactive Input Fields -->
+        <form onsubmit="event.preventDefault();">
+            <div class="form-group">
+                <label>What Happened?</label>
+                <select>
+                    <option>Pick the closest description...</option>
+                    <option>Tiffin Theft / Food Extortion</option>
+                    <option>Illegal Bribes & Tolls</option>
+                    <option>Syllabus Bloat / Bad Scheduling</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>When did it happen?</label>
+                <select>
+                    <option value="" disabled selected hidden></option>
+                    <option>Today</option>
+                    <option>Yesterday</option>
+                    <option>Within this week</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tell us what happened</label>
+                <textarea placeholder="Be as specific as you can — dates, amounts, what was said, who was there. The more detail, the stronger the case. Don't include your own name."></textarea>
+                <div class="form-hint">Don't include your name or anything that could identify you.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Photo Evidence</label>
+                <div class="upload-zone">
+                    <div class="upload-icon">🗂️</div>
+                    <div class="upload-text">drag & drop or <span>browse</span></div>
+                    <div class="upload-subtext">PNG, JPG, WEBP — max 10 MB</div>
+                </div>
+                <div class="metadata-tag">✓ EXIF metadata stripped automatically</div>
+            </div>
+
+            <!-- Action Buttons -->
+            <button type="submit" class="btn btn-submit">
+                Submit Anonymous Strike <span>🔒 Encrypted via Anonymity Pipeline</span>
+            </button>
+            
+            <button type="button" class="btn btn-emergency">
+                🚨 Emergency SOS 🚨
+            </button>
+            <div class="emergency-desc">Only if you're in immediate danger — alerts administrators right now</div>
+        </form>
+
+        <!-- Ledger Table Dashboard -->
+        <div class="ledger-title">Recent Case Ledger</div>
+        <table class="ledger-table">
+            <tr>
+                <td>AKP-83241</td>
+                <td class="case-title">Tiffin Theft / Food Extortion</td>
+                <td>2026-07-10</td>
+                <td class="status-open">Open</td>
+            </tr>
+            <tr>
+                <td>AKP-71098</td>
+                <td class="case-title">Illegal Bribes & Tolls</td>
+                <td>2026-07-08</td>
+                <td class="status-resolved">Resolved</td>
+            </tr>
+            <tr>
+                <td>AKP-55321</td>
+                <td class="case-title">Syllabus Bloat / Bad Scheduling</td>
+                <td>2026-07-03</td>
+                <td class="status-review">Under Review</td>
+            </tr>
+        </table>
+
+        <!-- Navigation Context Footers -->
+        <div class="pagination-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+
+        <a href="#" class="next-link">Seat Planner ></a>
+
+        <div class="footer-banner">Anti Kuddus Protocol — All Evidence Encrypted — Stay Safe</div>
+    </div>
+
+</body>
+</html>
