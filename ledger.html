@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti Kuddus Protocol - Evidence Ledger</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #111111;
+            --card-inner: #161616;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-muted: #444444;
+            --accent-red: #cc0000;
+            --accent-green-bright: #268552;
+            --accent-green-dark: #1b5e3a;
+            --accent-orange: #d97706;
+            --border-color: #1a1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* Header Styles */
+        header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            color: var(--accent-red);
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: transparent;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 35px;
+            gap: 24px;
+        }
+
+        .nav-tab {
+            padding: 12px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-green-bright);
+            border-bottom: 2px solid var(--accent-green-bright);
+        }
+
+        /* Section Headings */
+        .section-meta {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+
+        /* Sub-navigation Submenu Tabs */
+        .sub-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .sub-tab {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px 8px;
+        }
+
+        .sub-tab.active {
+            background-color: rgba(38, 133, 82, 0.15);
+            color: var(--accent-green-bright);
+            border: 1px solid rgba(38, 133, 82, 0.3);
+            border-radius: 4px;
+        }
+
+        .section-intro {
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Log New Incident Card Form */
+        .incident-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card-label {
+            color: var(--accent-green-bright);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 12px;
+            outline: none;
+        }
+
+        .full-input {
+            margin-bottom: 12px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px;
+        }
+
+        .btn-add-entry {
+            background-color: var(--accent-green-dark);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Analytics Chart Area */
+        .analytics-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            color: var(--accent-green-bright);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .chart-subtitle {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 140px;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        /* Dotted horizontal alignment guidelines grid line helpers */
+        .chart-grid-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-top: 1px dotted rgba(68, 68, 68, 0.3);
+            pointer-events: none;
+        }
+        .line-60 { top: 0%; }
+        .line-45 { top: 25%; }
+        .line-30 { top: 50%; }
+        .line-15 { top: 75%; }
+
+        .chart-y-axis {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: right;
+            width: 20px;
+        }
+
+        .chart-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50px;
+            position: relative;
+        }
+
+        .bar {
+            width: 24px;
+            background-color: var(--accent-orange);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .col-label {
+            position: absolute;
+            bottom: -22px;
+            font-size: 10px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 11px;
+            margin-top: 35px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+
+        .dot-marker {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .marker-cash { background-color: var(--accent-green-bright); }
+        .marker-food { background-color: var(--accent-orange); }
+
+        /* Incidents Feed / Logs Engine */
+        .feed-title {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            margin-top: 10px;
+        }
+
+        .incident-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .incident-meta {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            gap: 8px;
+        }
+
+        .incident-badge {
+            font-weight: bold;
+            color: var(--accent-orange);
+        }
+        .badge-cash {
+            color: var(--accent-green-bright);
+        }
+
+        .incident-timestamp {
+            color: var(--text-muted);
+        }
+
+        .incident-id {
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .incident-details {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* Footer Structural Utilities */
+        .footer-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .pagination-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: var(--accent-green-bright);
+        }
+
+        .footer-banner {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <button class="logout-btn">← Log Out</button>
+            <h1 class="main-title">Anti Kuddus Protocol</h1>
+            <button class="status-badge">• Total Strikes on Record: 2/3 ▼</button>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav>
+            <div class="nav-tab">01 Report Abuse</div>
+            <div class="nav-tab">02 Seat Planner</div>
+            <div class="nav-tab active">03 Tools</div>
+        </nav>
+
+        <!-- Main Section Info Titles -->
+        <div class="section-meta">Section 03</div>
+        <h2>Student Tools</h2>
+
+        <!-- Sub-navigation Submenu Tabs -->
+        <div class="sub-tabs">
+            <div class="sub-tab">Send Strikes</div>
+            <div class="sub-tab">Syllabus AI</div>
+            <div class="sub-tab active">Evidence Ledger</div>
+        </div>
+
+        <p class="section-intro">Log every incident anonymously — who Kuddus taxed, whose tiffin went missing, what was taken. This builds the evidentiary record.</p>
+
+        <!-- Log New Incident Interactive Form Grid Block -->
+        <div class="incident-card">
+            <span class="card-label">Log New Incident</span>
+            <form onsubmit="event.preventDefault();">
+                <div class="grid-inputs">
+                    <select>
+                        <option>Cash / Bribe</option>
+                        <option>Tiffin / Food</option>
+                        <option>Other</option>
+                    </select>
+                    <select>
+                        <option value="" disabled selected hidden></option>
+                    </select>
+                </div>
+                
+                <div class="full-input">
+                    <input type="text" placeholder="Amount (e.g. ৳2, ৳10)">
+                </div>
+
+                <div class="full-input">
+                    <textarea placeholder="Brief description of what happened – keep it factual"></textarea>
+                </div>
+
+                <button type="submit" class="btn-add-entry">Add Entry</button>
+            </form>
+        </div>
+
+        <!-- Analytics Visual Section Graph Chart Wrapper -->
+        <div class="analytics-card">
+            <div class="chart-title">Extortion Over Time</div>
+            <div class="chart-subtitle">cash collected (৳) and food items stolen per week</div>
+
+            <div class="chart-container">
+                <div class="chart-grid-line line-60"></div>
+                <div class="chart-grid-line line-45"></div>
+                <div class="chart-grid-line line-30"></div>
+                <div class="chart-grid-line line-15"></div>
+
+                <div class="chart-y-axis">
+                    <span>60</span>
+                    <span>45</span>
+                    <span>30</span>
+                    <span>15</span>
+                    <span>0</span>
+                </div>
+
+                <!-- Wk 1 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 35px;"></div>
+                    <span class="col-label">Wk 1</span>
+                </div>
+
+                <!-- Wk 2 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 52px;"></div>
+                    <span class="col-label">Wk 2</span>
+                </div>
+
+                <!-- Wk 3 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 18px;"></div>
+                    <span class="col-label">Wk 3</span>
+                </div>
+
+                <!-- Wk 4 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 70px;"></div>
+                    <span class="col-label">Wk 4</span>
+                </div>
+
+                <!-- Wk 5 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 42px;"></div>
+                    <span class="col-label">Wk 5</span>
+                </div>
+
+                <!-- Wk 6 -->
+                <div class="chart-column">
+                    <div class="bar" style="height: 95px;"></div>
+                    <span class="col-label">Wk 6</span>
+                </div>
+            </div>
+
+            <!-- Chart Legend Markers -->
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="dot-marker marker-cash"></span> Cash (৳)
+                </div>
+                <div class="legend-item">
+                    <span class="dot-marker marker-food"></span> Food items
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Feed / Log Entries List Block Stack -->
+        <div class="feed-title">All Logged Incidents</div>
+
+        <!-- Item 1 -->
+        <div class="incident-item">
+            <div class="incident-meta">
+                <span class="incident-badge badge-cash">💵 ৳2</span>
+                <span class="incident-timestamp">2026-07-11</span>
+                <span class="incident-id">L-001</span>
+            </div>
+            <div class="incident-details">Washroom tax collected at the door</div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="incident-item">
+            <div class="incident-meta">
+                <span class="incident-badge">🍱 1 tiffin</span>
+                <span class="incident-timestamp">2026-07-11</span>
+                <span class="incident-id">L-002</span>
+            </div>
+            <div class="incident-details">Ate from lunch box during break</div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="incident-item">
+            <div class="incident-meta">
+                <span class="incident-badge badge-cash">💵 ৳5</span>
+                <span class="incident-timestamp">2026-07-10</span>
+                <span class="incident-id">L-003</span>
+            </div>
+            <div class="incident-details">Charged for using the classroom fan</div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="incident-item">
+            <div class="incident-meta">
+                <span class="incident-badge">🎒 Chips packet</span>
+                <span class="incident-timestamp">2026-07-09</span>
+                <span class="incident-id">L-004</span>
+            </div>
+            <div class="incident-details">Confiscated snack, never returned</div>
+        </div>
+
+        <!-- Footer Control Panels Hierarchy Navigation links -->
+        <div class="footer-navigation">
+            <a href="#" class="nav-link">&lt; Seat Planner</a>
+            <div class="pagination-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot active"></span>
+            </div>
+            <span class="nav-link" style="visibility: hidden;">Tools &gt;</span>
+        </div>
+
+        <!-- Absolute Security Banner Branding Status Identity -->
+        <div class="footer-banner">Anti Kuddus Protocol — All Evidence Encrypted — Stay Safe</div>
+    </div>
+
+</body>
+</html>
