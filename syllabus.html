@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti Kuddus Protocol - Syllabus AI</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #111111;
+            --card-inner: #161616;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-muted: #444444;
+            --accent-red: #cc0000;
+            --accent-green-bright: #268552;
+            --accent-orange: #d97706;
+            --border-color: #1a1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* Header Styles */
+        header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            color: var(--accent-red);
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: transparent;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 35px;
+            gap: 24px;
+        }
+
+        .nav-tab {
+            padding: 12px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-green-bright);
+            border-bottom: 2px solid var(--accent-green-bright);
+        }
+
+        /* Section Headings */
+        .section-meta {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+
+        /* Sub-navigation Submenu Tabs */
+        .sub-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .sub-tab {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px 8px;
+        }
+
+        .sub-tab.active {
+            background-color: rgba(38, 133, 82, 0.15);
+            color: var(--accent-green-bright);
+            border: 1px solid rgba(38, 133, 82, 0.3);
+            border-radius: 4px;
+        }
+
+        /* Official Syllabus Selector Dropdown */
+        .syllabus-selector {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--accent-green-bright);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .syllabus-selector span {
+            color: var(--text-muted);
+            text-transform: none;
+        }
+
+        .syllabus-selector::after {
+            content: "▼";
+            font-size: 8px;
+            color: var(--text-secondary);
+        }
+
+        /* Syllabus AI Generation Panel */
+        .ai-panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 50px;
+        }
+
+        .ai-header {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .ai-icon {
+            background-color: var(--accent-green-bright);
+            color: var(--bg-color);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .ai-header-text h3 {
+            font-size: 13px;
+            font-weight: normal;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .ai-header-text p {
+            color: var(--text-secondary);
+            font-size: 11px;
+        }
+
+        /* Generation Interactive Row */
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 8px 8px 16px;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn-generate {
+            background-color: var(--accent-green-bright);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.1s;
+        }
+
+        .btn-generate:hover {
+            opacity: 0.9;
+        }
+
+        /* Footer Navigation Layout Controls */
+        .footer-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .pagination-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: var(--accent-green-bright);
+        }
+
+        .footer-banner {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <button class="logout-btn">← Log Out</button>
+            <h1 class="main-title">Anti Kuddus Protocol</h1>
+            <button class="status-badge">• Total Strikes on Record: 2/3 ▼</button>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav>
+            <div class="nav-tab">01 Report Abuse</div>
+            <div class="nav-tab">02 Seat Planner</div>
+            <div class="nav-tab active">03 Tools</div>
+        </nav>
+
+        <!-- Main Section Titles -->
+        <div class="section-meta">Section 03</div>
+        <h2>Student Tools</h2>
+
+        <!-- Sub-navigation Submenu Tabs -->
+        <div class="sub-tabs">
+            <div class="sub-tab">Send Strikes</div>
+            <div class="sub-tab active">Syllabus AI</div>
+            <div class="sub-tab">Evidence Ledger</div>
+        </div>
+
+        <!-- Official File Reference Selector -->
+        <div class="syllabus-selector">
+            <div>📄 Kuddus's Official Syllabus <span>(Physics XI)</span></div>
+        </div>
+
+        <!-- Syllabus AI Workspace -->
+        <div class="ai-panel">
+            <div class="ai-header">
+                <div class="ai-icon">★</div>
+                <div class="ai-header-text">
+                    <h3>Syllabus AI</h3>
+                    <p>Breaks Kuddus's syllabus into small, doable study chunks</p>
+                </div>
+            </div>
+
+            <!-- Interactivity Entry System -->
+            <div class="input-wrapper">
+                <input type="text" placeholder="e.g. &quot;just Units 2 and 3&quot; or leave blank for full plan">
+                <button type="button" class="btn-generate">Generate</button>
+            </div>
+        </div>
+
+        <!-- Footer Control Structures -->
+        <div class="footer-navigation">
+            <a href="#" class="nav-link">&lt; Seat Planner</a>
+            <div class="pagination-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot active"></span>
+            </div>
+            <span class="nav-link" style="visibility: hidden;">Tools &gt;</span>
+        </div>
+
+        <!-- Systems Identity Protocol Classification Status Banner -->
+        <div class="footer-banner">Anti Kuddus Protocol — All Evidence Encrypted — Stay Safe</div>
+    </div>
+
+</body>
+</html>
