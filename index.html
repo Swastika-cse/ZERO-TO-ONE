@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Secure Portal</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #121212;
+            --text-primary: #ffffff;
+            --text-secondary: #555555;
+            --accent-green: #1b5e3a;
+            --accent-green-bright: #268552;
+            --accent-orange: #d97706;
+            --border-color: #1e1e1e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .badge-top {
+            color: var(--accent-green-bright);
+            border: 1px solid rgba(38, 133, 82, 0.3);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-container {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--accent-green-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .icon-container svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: var(--accent-green-bright);
+            stroke-width: 2;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: normal;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: lowercase;
+        }
+
+        .status-dropdown {
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 30px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .status-dropdown::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-orange);
+            border-radius: 50%;
+        }
+
+        .status-dropdown::after {
+            content: "▼";
+            font-size: 8px;
+            margin-left: 4px;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            background-color: #161616;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-green-bright);
+        }
+
+        input::placeholder {
+            color: #333333;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--accent-green);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-green-bright);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="badge-top">Secure Portal</div>
+
+    <div class="login-card">
+        <div class="icon-container">
+            <!-- Lock Icon -->
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+        </div>
+
+        <h1>Authentication</h1>
+        <div class="subtitle">restricted access</div>
+
+        <button class="status-dropdown">2/3</button>
+
+        <form onsubmit="event.preventDefault();">
+            <div class="input-group">
+                <label for="roll-number">Roll Number</label>
+                <input type="text" id="roll-number" placeholder="e.g. 2024-017" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-submit">Authenticate Securely</button>
+        </form>
+    </div>
+
+    <div class="footer-text">anti kuddus protocol — classified</div>
+
+</body>
+</html>
